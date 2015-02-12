@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+      .toast-alert {background-color: #d91c2d;}
+    </style>
+  <title>Carpool</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCWknSnnN9xTWCNlRbRIB1p7QRw9V_S_dI" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= render "layouts/topbar" %>
+
+<!-- <p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p> -->
+
+<%= yield %>
+
+<%= render "layouts/footer" %>
+
+<script type="text/javascript">
+	<% if notice %>
+		toast("<%= notice %>", 5000)
+	<% end %>
+
+	<% if alert %>
+		toast("<%= alert %>", 10000, 'toast-alert')
+	<% end %>
+</script>
+
+</body>
+</html>

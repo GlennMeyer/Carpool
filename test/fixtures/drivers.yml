@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  meetup_street: MyString
+  meetup_city: MyString
+  meetup_state: MyString
+  dropoff_street: MyString
+  dropoff_city: MyString
+  dropoff_state: MyString
+  departure_time: 2015-02-08 13:25:12
+  return_time: 2015-02-08 13:25:12
+
+two:
+  meetup_street: MyString
+  meetup_city: MyString
+  meetup_state: MyString
+  dropoff_street: MyString
+  dropoff_city: MyString
+  dropoff_state: MyString
+  departure_time: 2015-02-08 13:25:12
+  return_time: 2015-02-08 13:25:12

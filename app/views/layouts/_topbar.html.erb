@@ -1,0 +1,101 @@
+<nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">Carpool</a>
+    <ul id="nav-mobile" class="right side-nav">
+    	<% if current_user %>
+    		<li><%= link_to "Create Commute", test_path %></li>
+    		<li><%= link_to "Messages", inbox_path %></li>
+    		<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
+    	<% else %>
+			<li><%= link_to "Log In", '#log_in_modal', class: "modal-trigger" %></li>
+			<li><%= link_to "Sign Up", '#sign_up_modal', class: "modal-trigger" %></li>
+      	<% end %>
+      <li><a href="#">About Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Log In Modal Structure -->
+<div id="log_in_modal" class="modal row">
+	<h4>Log In</h4>
+	<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "col s12"}) do |f| %>
+		<div class="row">
+			<div class="input-field col s12">
+				<%= f.label :email %><br />
+				<%= f.email_field :email, autofocus: true, class: "validate" %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<%= f.label :password %><br />
+				<%= f.password_field :password, autocomplete: "off", class: "validate" %>
+			</div>
+		</div>
+
+		<% if devise_mapping.rememberable? -%>
+			<div class="row">
+				<div class="input-field col s12">
+	  				<%= f.check_box :remember_me %>
+	  				<%= f.label :remember_me %>
+				</div>
+			</div>
+		<% end -%>
+
+		<div class="actions">
+	    	<button class="btn waves-effect waves-light" type="submit" name="action">Log In
+	    		<i class="mdi-content-send right"></i>
+	  		</button>
+	  	</div>
+	<% end %>
+	<%= render "devise/shared/links" %>
+</div>
+<!-- End of Log In Modal Structure -->
+
+<!-- Sign Up Modal Structure -->
+<div id="sign_up_modal" class="modal row">
+	<h4>Sign Up</h4>
+	<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  		<%= devise_error_messages! %>
+  		<div class="row">
+	    	<div class="input-field col s12">
+	        	<%= f.label :username %><br />
+	        	<%= f.text_field :username, autofocus: true, class: "validate" %>
+	    	</div>
+	    </div>
+  		<div class="row">
+  			<div class="input-field col s12">
+    			<%= f.label :email %><br />
+    			<%= f.email_field :email, class: "validate" %>
+  			</div>
+  		</div>
+  		<div class="row">
+	  		<div class="input-field col s12">
+	    		<%= f.label :password %>
+	    		<% if @validatable %>
+	    			<em>(<%= @minimum_password_length %> characters minimum)</em>
+	    		<% end %><br />
+	    		<%= f.password_field :password, autocomplete: "off", class: "validate" %>
+	  		</div>
+  		</div>
+  		<div class="row">
+  			<div class="input-field col s12">
+    			<%= f.label :password_confirmation %><br />
+    			<%= f.password_field :password_confirmation, autocomplete: "off", class: "validate" %>
+  			</div>
+  		</div>
+
+		<div class="actions">
+    		<button class="btn waves-effect waves-light" type="submit" name="action">Sign Up
+    			<i class="mdi-content-send right"></i>
+  			</button>
+  		</div>
+	<% end %>
+	<%= render "devise/shared/links" %>
+</div>
+<!-- End of Sign Up Modal Structure -->
+
+<script>
+	$(document).ready(function(){
+    	$('.modal-trigger').leanModal();
+  	});
+</script>
