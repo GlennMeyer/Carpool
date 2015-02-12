@@ -7,16 +7,16 @@ Rails.application.routes.draw do
   root "home#index"
 
   # Creating directions
-  get '/test' => 'home#test'
-  post '/create' => 'home#create'
+  get 'users/:id/commutes/new' => 'commute#new', as: 'new_commute'
+  post 'users/:id/commutes/create' => 'commute#create', as: 'commute'
 
   # Updating directions/viewing Riders
-  get '/commutes/:id/edit' => 'home#edit', as: 'edit_commute'
-  put '/commutes/:id' => 'home#update'
-  patch '/commutes/:id' => 'home#update'
+  get '/users/:user_id/commutes/:id/edit' => 'commute#edit', as: 'edit_commute'
+  put '/users/:user_id/commutes/:id' => 'commute#update'
+  patch '/users/:user_id/commutes/:id' => 'commute#update'
 
   # Messages Inbox
-  get '/inbox' => 'home#inbox'
+  get 'users/:id/inbox' => 'home#inbox', as: 'inbox'
 
   # You can have the root of your site routed with "root"
 

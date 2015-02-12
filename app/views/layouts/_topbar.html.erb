@@ -3,8 +3,8 @@
     <a href="/" class="brand-logo">Carpool</a>
     <ul id="nav-mobile" class="right side-nav">
     	<% if current_user %>
-    		<li><%= link_to "Create Commute", test_path %></li>
-    		<li><%= link_to "Messages", inbox_path %></li>
+    		<li><%= link_to "Create Commute", new_commute_path(current_user) %></li>
+    		<li><%= link_to "Messages", inbox_path(current_user) %></li>
     		<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
     	<% else %>
 			<li><%= link_to "Log In", '#log_in_modal', class: "modal-trigger" %></li>

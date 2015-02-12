@@ -1,0 +1,253 @@
+<div id="map-canvas" style="height: 50%; width: 66.6%; display: block; margin-left: auto; margin-right: auto;">
+</div>
+<div class="row"><%= form_for @commute, :url => { :action => "update" } do |f| %>
+	<div class='container'>
+		<div class="col s6">
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :meetup_street %>
+					<%= f.text_field :meetup_street %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :meetup_city %>
+					<%= f.text_field :meetup_city %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :meetup_state %>		
+					<%= f.text_field :meetup_state %>
+				</div>
+			</div>
+		</div>
+		<div class="col s6">
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :dropoff_street %>
+					<%= f.text_field :dropoff_street %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :dropoff_city %>
+					<%= f.text_field :dropoff_city %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<%= f.label :dropoff_state %>
+					<%= f.text_field :dropoff_state %>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s4">
+				<%= f.label :meetup_time %>
+				<%= f.select(:meetup_time, class: 'meetup-time-select') do %>
+					<% [['06 AM', '06:00:00'],['07 AM', '07:00:00'],['08 AM', '08:00:00'],['09 AM', '09:00:00'],['10 AM', '10:00:00'],['11 AM', '11:00:00'],['12 AM', '12:00:00']].each do |c| -%>
+						<%= content_tag(:option, c.first, value: c.last) %>
+					<% end %>
+				<% end %>
+			</div>
+			<div class="col s4">
+				<%= f.label :dropoff_time %>
+				<%= f.select(:dropoff_time, class: 'dropoff-time-select') do %>
+					<% [['03 PM', '15:00:00'],['04 PM', '16:00:00'],['05 PM', '17:00:00'],['06 PM', '18:00:00'],['07 PM', '19:00:00'],['08 PM', '20:00:00'],['09 PM', '21:00:00']].each do |c| -%>
+						<%= content_tag(:option, c.first, value: c.last) %>
+					<% end %>
+				<% end %>
+			</div>
+			<div class="col s4">
+				<%= f.label :search_distance %>
+				<p class="range-field">
+    				<input type="range" name='commute[search_distance]' id="commute_search_distance" min="1" max="10" value="<%= @commute.search_distance || 5 %>"/>
+  				</p>
+			</div>
+		</div>
+		<%= f.hidden_field :meetup_lat %>
+		<%= f.hidden_field :meetup_lng %>
+		<%= f.hidden_field :dropoff_lat %>
+		<%= f.hidden_field :dropoff_lng %>
+	</div>
+	<div class="row">
+		<div class="col s5">&nbsp;</div>
+		<div class="col s2">
+			<button class="btn waves-effect waves-light" type="submit" name="action">Edit Commute
+    			<i class="mdi-content-send right"></i>
+  			</button>
+		</div>
+		<div class="col s5">&nbsp;</div>
+	</div>
+	<% end %>
+</div>
+
+<script type="text/javascript">
+	// Clear original Geocode incase user needs to update
+	$(document).ready(function(){
+		$('select').material_select()
+
+		var meetupTime = "<%= @commute.meetup_time.to_s.split(' ')[1] %>"
+		var dropoffTime = "<%= @commute.dropoff_time.to_s.split(' ')[1] %>"
+		var meetupHour = meetupTime.split(':')[0] + ' AM'
+		var dropoffHour = "0" + String(dropoffTime.split(':')[0] - 12 ) + ' PM'
+
+		$('span.select-dropdown:first').text(meetupHour)
+		$('#commute_meetup_time').val(meetupTime)
+
+		$('span.select-dropdown:last').text(dropoffHour)
+		$('#commute_dropoff_time').val(dropoffTime)
+
+	})
+
+	// Google Maps API for plotting directions and finding nearby riders.
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+	var map;
+	var directions = []
+
+	// Initializing the map as well as DirectionsRenderer and Geocoder
+	function initialize() {
+		geocoder = new google.maps.Geocoder();
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		var austin = new google.maps.LatLng(30.264477, -97.746192);
+		var mapOptions = {
+		    zoom:11,
+		    center: austin
+		}
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+		directionsDisplay.setMap(map);
+	}
+    initialize();
+
+    // Calculating and displaying the directions
+	function calcRoute() {
+		var start = document.getElementById("commute_meetup_street").value + " " + document.getElementById("commute_meetup_city").value + " " + document.getElementById("commute_meetup_state").value;
+		var end = document.getElementById("commute_dropoff_street").value + " " + document.getElementById("commute_dropoff_city").value + " " + document.getElementById("commute_dropoff_state").value;
+		var request = {
+			origin:start,
+			destination:end,
+			travelMode: google.maps.TravelMode.DRIVING
+		};
+		directionsService.route(request, function(result, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(result);
+				directions.push({
+					k: result.routes[0].overview_path[0].k,
+					D: result.routes[0].overview_path[0].D
+				},{
+					k: result.routes[0].overview_path[result.routes[0].overview_path.length-1].k,
+					D: result.routes[0].overview_path[result.routes[0].overview_path.length-1].D
+				})
+
+				var infowindow = new google.maps.InfoWindow()
+				var initial = directions[0]
+				var riderCount = 0
+
+				<% @commutes.each do |entry| %>
+
+				var compare = {k: <%= entry.meetup_lat ? entry.meetup_lat : 0 %>, D: <%= entry.meetup_lng ? entry.meetup_lng : 0 %>}
+
+				if (google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= @commute.search_distance %> * 1600) ){
+
+					var marker = new google.maps.Marker({
+			    		position: new google.maps.LatLng(compare.k, compare.D),
+			    		animation: google.maps.Animation.DROP,
+			    		map: map
+					});
+
+					// '#sign_up_modal', class: "modal-trigger"
+
+					google.maps.event.addListener(marker, 'click', (function(marker){
+							return function() {
+								// infowindow.setContent('<h6>Rider found!</h6><p><%= entry.meetup_street %></p><%= link_to "Invite Rider", "#rider_invite_modal", class: "modal-trigger" %>')
+								infowindow.setContent("<h6>Rider found!</h6><p><%= User.find(entry.user_id).username %></p><a href='#rider_invite_modal' class='modal-trigger waves-effect waves-light btn'>Invite Rider</a>")
+		    					infowindow.open(map, marker);
+							}
+
+  					})(marker))
+				}
+				<% end %>
+
+				google.maps.event.addListener(infowindow, 'domready', function() {
+      				$('.modal-trigger').leanModal();
+				});
+			}
+		});
+	}
+    calcRoute();
+    // End of Google Maps API Implementation
+
+    // Function for geocoding the Address, City, and State into LatLong.
+	var geocoder;
+
+    function codeAddress() {
+	    var meetupAddress = document.getElementById("commute_meetup_street").value + " " + document.getElementById("commute_meetup_city").value + " " + document.getElementById("commute_meetup_state").value;
+	    geocoder.geocode( { 'address': meetupAddress}, function(results, status) {
+	    	if (status == google.maps.GeocoderStatus.OK) {
+	        	// map.setCenter(results[0].geometry.location);
+	        	// var marker = new google.maps.Marker({
+	         //    	map: map,
+	         //    	position: results[0].geometry.location
+	        	// });
+	    		console.log(results[0].geometry.location)
+	    		$('#commute_meetup_lat').val(results[0].geometry.location.k)
+	    		$('#commute_meetup_lng').val(results[0].geometry.location.D)
+	    	} else {
+	    		alert("Meet-up Geocode was not successful for the following reason: " + status);
+	    	}
+		});
+		var dropoffAddress = document.getElementById("commute_meetup_street").value + " " + document.getElementById("commute_meetup_city").value + " " + document.getElementById("commute_meetup_state").value;
+	    geocoder.geocode( { 'address': dropoffAddress}, function(results, status) {
+	    	if (status == google.maps.GeocoderStatus.OK) {
+	        	// map.setCenter(results[0].geometry.location);
+	        	// var marker = new google.maps.Marker({
+	         //    	map: map,
+	         //    	position: results[0].geometry.location
+	        	// });
+	    		console.log(results[0].geometry.location)
+	    		$('#commute_dropoff_lat').val(results[0].geometry.location.k)
+	    		$('#commute_dropoff_lng').val(results[0].geometry.location.D)
+	    	} else {
+	    		alert("Drop-off Geocode was not successful for the following reason: " + status);
+	    	}
+		});
+	}
+	// End of function
+
+	$("[name='action']").hover(function(){
+		codeAddress()
+	})
+</script>
+
+<!-- Rider Invite Modal -->
+<div id="rider_invite_modal" class="modal row">
+	<div class="row">
+		<div class="col s12">
+			<h4>Send a message to the Rider.</h4>
+		</div>
+	</div>
+	<form class="col s12">
+    <div class="row">
+      <div class="input-field col s4">
+        <input id="sender" type="text" class="validate">
+        <label for="sender">Sender:</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="recipient" type="text" class="validate">
+        <label for="recipient">Recipient:</label>
+      </div>
+    </div>
+    <div class="row">
+    	<div class="col s8">
+	    	<textarea class="materialize-textarea" placeholder="Hey man!  Let's meet-up!"></textarea>
+	        <label>Message:</label>
+    	</div>
+    	<div class="col s4">
+    		<a href='#' class='waves-effect waves-light btn'>Send Message</a>
+    	</div>
+	</div>
+  </form>
+</div>
+<!-- End Rider Invite Modal -->
