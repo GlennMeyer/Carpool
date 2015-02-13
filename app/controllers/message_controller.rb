@@ -5,7 +5,7 @@ class MessageController < ApplicationController
     @user = User.find(current_user.id)
     @user.messages_as_sender.create(message_params)
 
-    redirect_to edit_commute_path(@user, @user.commute)
+    redirect_to inbox_path(current_user)
   end
 
   def destroy
@@ -17,6 +17,8 @@ class MessageController < ApplicationController
 
   def index
     user = User.find(current_user.id)
+
+    @message = Message.new
 
     @inbox = user.messages_as_recipient
     @outbox = user.messages_as_sender
