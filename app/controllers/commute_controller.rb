@@ -1,4 +1,6 @@
 class CommuteController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     @user = User.find(current_user.id)
     @commute = @user.create_commute(commute_params)
@@ -10,6 +12,8 @@ class CommuteController < ApplicationController
     @commute = Commute.find(params[:id])
 
     @commutes = Commute.where("user_id != #{current_user.id}")
+
+    @message = Message.new
   end
 
   def new
@@ -19,7 +23,7 @@ class CommuteController < ApplicationController
   def update
     commute = Commute.find(current_user.id)
     commute.update(commute_params)
-    redirect_to edit_commute_path(commute)
+    redirect_to edit_commute_path(current_user, commute)
   end
 
   private

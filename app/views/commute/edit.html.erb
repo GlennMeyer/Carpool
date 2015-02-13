@@ -162,7 +162,7 @@
 					google.maps.event.addListener(marker, 'click', (function(marker){
 							return function() {
 								// infowindow.setContent('<h6>Rider found!</h6><p><%= entry.meetup_street %></p><%= link_to "Invite Rider", "#rider_invite_modal", class: "modal-trigger" %>')
-								infowindow.setContent("<h6>Rider found!</h6><p><%= User.find(entry.user_id).username %></p><a href='#rider_invite_modal' class='modal-trigger waves-effect waves-light btn'>Invite Rider</a>")
+								infowindow.setContent("<h6>Rider found!</h6><p id='recipient-username' data-id='<%= entry.user_id %>'><%= User.find(entry.user_id).username %></p><a href='#rider_invite_modal' class='modal-trigger waves-effect waves-light btn'>Invite Rider</a>")
 		    					infowindow.open(map, marker);
 							}
 
@@ -171,7 +171,14 @@
 				<% end %>
 
 				google.maps.event.addListener(infowindow, 'domready', function() {
-      				$('.modal-trigger').leanModal();
+      				$('.modal-trigger').leanModal({
+      					ready: function() {
+      						var recipient = $('p#recipient-username').text()
+      						var recipientId = $('p#recipient-username').attr('data-id')
+    						$('#recipient').val(recipient)
+    						$('#message_recipient_id').val(recipientId)
+    					}
+      				});
 				});
 			}
 		});
@@ -222,7 +229,7 @@
 </script>
 
 <!-- Rider Invite Modal -->
-<div id="rider_invite_modal" class="modal row">
+<!-- <div id="rider_invite_modal" class="modal row">
 	<div class="row">
 		<div class="col s12">
 			<h4>Send a message to the Rider.</h4>
@@ -230,13 +237,13 @@
 	</div>
 	<form class="col s12">
     <div class="row">
-      <div class="input-field col s4">
-        <input id="sender" type="text" class="validate">
+      <div class="col s4">
         <label for="sender">Sender:</label>
+        <input id="sender" type="text" class="validate" value='<%= current_user.username %>' disabled selected>
       </div>
-      <div class="input-field col s4">
-        <input id="recipient" type="text" class="validate">
+      <div class="col s4">
         <label for="recipient">Recipient:</label>
+        <input id="recipient" type="text" class="validate" disabled selected>
       </div>
     </div>
     <div class="row">
@@ -249,5 +256,37 @@
     	</div>
 	</div>
   </form>
-</div>
+</div> -->
 <!-- End Rider Invite Modal -->
+
+<div id="rider_invite_modal" class="modal row">
+	<div class="row">
+		<div class="col s12">
+			<h4>Send a message to the Rider.</h4>
+		</div>
+	</div>
+	<%= form_for @message, url: message_path, html: {class: 'col s12'} do |f| %>
+    <div class="row">
+      <div class="col s4">
+        <label for="sender">Sender:</label>
+        <input id="sender" type="text" class="validate" value='<%= current_user.username %>' disabled selected>
+      </div>
+      <div class="col s4">
+        <label for="recipient">Recipient:</label>
+        <input id="recipient" type="text" class="validate" disabled selected>
+        <%= f.hidden_field :recipient_id %>
+      </div>
+    </div>
+    <div class="row">
+    	<div class="col s8">
+	    	<!-- <textarea class="materialize-textarea" placeholder="Hey man!  Let's meet-up!"></textarea>
+	        <label>Message:</label> -->
+	        <%= f.label :message %>
+	        <%= f.text_area :message, class: 'materialize-textarea' %>
+    	</div>
+    	<div class="col s4">
+    		<button type='submit' class='waves-effect waves-light btn'>Send Message</button>
+    	</div>
+	</div>
+  <% end %>
+</div>
