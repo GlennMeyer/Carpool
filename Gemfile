@@ -49,6 +49,6 @@ group :development, :test do
 
   gem 'rack', '~>1.1'
 
-  gem 'rspec', :require => 'spec'
+  gem 'rspec'
 end
 
