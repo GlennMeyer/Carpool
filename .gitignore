@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
+/vendor/bundle
 /.bundle
 
 # Ignore the default SQLite database.
@@ -19,3 +20,9 @@
 *.swp
 *.swo
 *.swn
+
+**.orig
+
+.respec
+
+.DS_Store
