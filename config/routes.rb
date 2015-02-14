@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'message/create'
+
   devise_for :users#, :controllers => {:registrations => "users"}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -16,7 +18,11 @@ Rails.application.routes.draw do
   patch '/users/:user_id/commutes/:id' => 'commute#update'
 
   # Messages Inbox
-  get 'users/:id/inbox' => 'home#inbox', as: 'inbox'
+  get 'users/:id/inbox' => 'message#index', as: 'inbox'
+
+  post 'users/:id/messages/create' => 'message#create', as: 'message'
+
+  get 'messages/:id' => 'message#destroy', as: 'destroy_message'
 
   # You can have the root of your site routed with "root"
 

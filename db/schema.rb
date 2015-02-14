@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211190859) do
+ActiveRecord::Schema.define(version: 20150212180528) do
 
   create_table "commutes", force: :cascade do |t|
     t.integer "user_id"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20150211190859) do
     t.time    "meetup_time"
     t.time    "dropoff_time"
     t.integer "search_distance"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "message"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "users", force: :cascade do |t|
