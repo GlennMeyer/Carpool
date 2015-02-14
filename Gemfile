@@ -50,5 +50,7 @@ group :development, :test do
   gem 'rack', '~>1.1'
 
   gem 'rspec'
+
+  gem 'rails_12factor'
 end
 
