@@ -205,7 +205,7 @@
 	    		alert("Meet-up Geocode was not successful for the following reason: " + status);
 	    	}
 		});
-		var dropoffAddress = document.getElementById("commute_meetup_street").value + " " + document.getElementById("commute_meetup_city").value + " " + document.getElementById("commute_meetup_state").value;
+		var dropoffAddress = document.getElementById("commute_dropoff_street").value + " " + document.getElementById("commute_dropoff_city").value + " " + document.getElementById("commute_dropoff_state").value;
 	    geocoder.geocode( { 'address': dropoffAddress}, function(results, status) {
 	    	if (status == google.maps.GeocoderStatus.OK) {
 	        	// map.setCenter(results[0].geometry.location);
