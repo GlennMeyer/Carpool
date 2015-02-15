@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :messages_as_recipient, class_name: 'Message', foreign_key: 'recipient_id'
 
   has_one :commute
+  belongs_to :role, polymorphic: true
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
