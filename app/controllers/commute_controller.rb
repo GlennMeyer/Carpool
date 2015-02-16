@@ -13,7 +13,9 @@ class CommuteController < ApplicationController
 
     @commutes = Commute.where("user_id != #{current_user.id}")
 
+    @driver = Driver.new
     @message = Message.new
+    @rider = Rider.new
   end
 
   def new

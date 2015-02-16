@@ -139,3 +139,174 @@ Commute.create([
     search_distance: 5
   }
 ])
+
+Driver.create([
+  {
+    user_id: 1,
+    commute_id: 1
+  }
+])
+
+Rider.create([
+  {
+      user_id: 2,
+      commute_id: 2,
+      looking: true
+  },
+  {
+      user_id: 3,
+      commute_id: 3,
+      looking: true
+  },
+  {
+      user_id: 4,
+      commute_id: 4,
+      looking: true
+  },
+  {
+      user_id: 5,
+      commute_id: 5,
+      looking: true
+  }
+])
+
+Message.create([
+  {
+    sender_id: 1,
+    recipient_id: 2,
+    message: 'Test message user 1 to user 2'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 3,
+    message: 'Test message user 1 to user 3'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 4,
+    message: 'Test message user 1 to user 4'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 5,
+    message: 'Test message user 1 to user 5'
+  },
+  {
+    sender_id: 2,
+    recipient_id: 1,
+    message: 'Test message user 2 to user 1'
+  },
+  {
+    sender_id: 2,
+    recipient_id: 3,
+    message: 'Test message user 2 to user 3'
+  },
+  {
+    sender_id: 2,
+    recipient_id: 4,
+    message: 'Test message user 2 to user 4'
+  },
+  {
+    sender_id: 2,
+    recipient_id: 5,
+    message: 'Test message user 2 to user 5'
+  },
+  {
+    sender_id: 3,
+    recipient_id: 2,
+    message: 'Test message user 3 to user 2'
+  },
+  {
+    sender_id: 3,
+    recipient_id: 1,
+    message: 'Test message user 3 to user 1'
+  },
+  {
+    sender_id: 3,
+    recipient_id: 4,
+    message: 'Test message user 3 to user 4'
+  },
+  {
+    sender_id: 3,
+    recipient_id: 5,
+    message: 'Test message user 3 to user 5'
+  },
+  {
+    sender_id: 4,
+    recipient_id: 2,
+    message: 'Test message user 4 to user 2'
+  },
+  {
+    sender_id: 4,
+    recipient_id: 3,
+    message: 'Test message user 4 to user 3'
+  },
+  {
+    sender_id: 4,
+    recipient_id: 1,
+    message: 'Test message user 4 to user 1'
+  },
+  {
+    sender_id: 4,
+    recipient_id: 5,
+    message: 'Test message user 4 to user 5'
+  },
+  {
+    sender_id: 5,
+    recipient_id: 2,
+    message: 'Test message user 5 to user 2'
+  },
+  {
+    sender_id: 5,
+    recipient_id: 3,
+    message: 'Test message user 5 to user 3'
+  },
+  {
+    sender_id: 5,
+    recipient_id: 4,
+    message: 'Test message user 5 to user 4'
+  },
+  {
+    sender_id: 5,
+    recipient_id: 1,
+    message: 'Test message user 5 to user 1'
+  },
+  ##### Invites from Driver 1 to all Riders #####
+  {
+    sender_id: 1,
+    recipient_id: 2,
+    invite: true,
+    message: 'Test invite user 1 to user 2'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 3,
+    invite: true,
+    message: 'Test invite user 1 to user 3'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 4,
+    invite: true,
+    message: 'Test invite user 1 to user 4'
+  },
+  {
+    sender_id: 1,
+    recipient_id: 5,
+    invite: true,
+    message: 'Test invite user 1 to user 5'
+  }
+])
+
+Rideshare.create([
+  {
+    driver_id: 1,
+  },
+  {
+    driver_id: 1,
+  },
+  {
+    driver_id: 1,
+  }
+])
+

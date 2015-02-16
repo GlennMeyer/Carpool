@@ -6,6 +6,9 @@ class CreateMessages < ActiveRecord::Migration
 
       t.string :message
 
+      t.boolean :read, default: false
+      t.boolean :invite, default: false
+
       t.timestamps null: false
     end
   end
