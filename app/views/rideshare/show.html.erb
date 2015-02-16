@@ -1,0 +1,22 @@
+<div class='row'>
+	<div class='col s4'>&nbsp;</div>
+	<div class='col s4'>
+		<table>
+			<thead>
+				<tr>
+					<th data-field="user">Username</th>
+					<th data-field="remove">Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @riders.each do |rider| %>
+					<tr>
+						<td><%= rider.user.username %></td>
+						<td><button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-navigation-close"></i></button></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+	<div class='col s4'></div>
+</div>

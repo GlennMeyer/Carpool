@@ -11,15 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150215171052) do
+ActiveRecord::Schema.define(version: 20150215180631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "commutes", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "role_id"
-    t.string  "role_type"
     t.string  "meetup_street"
     t.string  "meetup_city"
     t.string  "meetup_state"
@@ -35,29 +33,34 @@ ActiveRecord::Schema.define(version: 20150215171052) do
     t.integer "search_distance"
   end
 
-  add_index "commutes", ["role_type", "role_id"], name: "index_commutes_on_role_type_and_role_id", using: :btree
-
   create_table "drivers", force: :cascade do |t|
     t.integer  "user_id",    null: false
-    t.integer  "riders",                  array: true
     t.integer  "commute_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "drivers", ["riders"], name: "index_drivers_on_riders", using: :gin
-
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
     t.string   "message"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.boolean  "read",         default: false
+    t.boolean  "invite",       default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "riders", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "commute_id"
+    t.integer  "user_id",                   null: false
+    t.integer  "commute_id",                null: false
+    t.boolean  "looking",    default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "rideshares", force: :cascade do |t|
+    t.integer  "driver_id",  null: false
+    t.integer  "rider_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

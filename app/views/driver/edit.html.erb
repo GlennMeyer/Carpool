@@ -1,0 +1,93 @@
+<div id="map-canvas" style="height: 50%; width: 66.6%; display: block; margin-left: auto; margin-right: auto;"></div>
+
+<script type="text/javascript">
+	var map;
+	var closeRiders = [];
+
+	function initialize() {
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		var austin = new google.maps.LatLng(30.264477, -97.746192);
+		var mapOptions = {
+		    zoom:11,
+		    center: austin
+		}
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+		directionsDisplay.setMap(map);
+	}
+    initialize();
+
+	google.maps.event.addListenerOnce(map, 'idle', function(){
+		var infowindow = new google.maps.InfoWindow()
+		var initial = {k: <%= @driver.commute.meetup_lat %>, D: <%= @driver.commute.meetup_lng %>}
+
+		<% @riders.each do |rider| %>
+
+		var compare = {k: <%= rider.commute.meetup_lat ? rider.commute.meetup_lat : 0 %>, D: <%= rider.commute.meetup_lng ? rider.commute.meetup_lng : 0 %>}
+
+		if (google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= @driver.commute.search_distance %> * 1600) ){
+
+			closeRiders.push({
+				id: "<%= rider.id %>",
+				username: "<%= rider.user.username %>"
+				})
+
+			var marker = new google.maps.Marker({
+	    		position: new google.maps.LatLng(compare.k, compare.D),
+	    		animation: google.maps.Animation.DROP,
+	    		map: map
+			});
+
+			google.maps.event.addListener(marker, 'click', (function(marker){
+					return function() {
+						infowindow.setContent("<h6>Rider found!</h6><p id='recipient-username' data-id='<%= rider.user.id %>'><%= rider.user.username %></p><a href='#rider_invite_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>&nbsp;<a href='#' class='modal-trigger waves-effect waves-light btn'><i class='mdi-content-add-circle-outline'></i></a>")
+    					infowindow.open(map, marker);
+					}
+
+				})(marker))
+		}
+		<% end %>
+		var table = $('#close-riders-table')
+		closeRiders.map(function(rider){
+			var $tr = $('<tr>')
+
+			var $td = $('<td>')
+			var $messageTd = $('<td>')
+			var $inviteTd = $('<td>')
+
+			var $messageButton = $('<button>').addClass('waves-effect waves-light btn')
+			var $messageIcon = $('<i>').addClass('mdi-communication-email')
+
+			var $inviteButton = $('<button>').addClass('waves-effect waves-light btn')
+			var $inviteIcon = $('<i>').addClass('mdi-content-add-circle-outline')
+
+			$td.text(rider.username).attr('data-rider-id', rider.id)
+			$tr.append($td)
+			$messageButton.append($messageIcon)
+			$messageTd.append($messageButton)
+			$tr.append($messageTd)
+			$inviteButton.append($inviteIcon)
+			$inviteTd.append($inviteButton)
+			$tr.append($inviteTd)
+			table.append($tr)
+		})
+	});
+	
+	console.log('closeRiders', closeRiders)
+
+</script>
+<div class='row'>
+	<div class='col s3'>&nbsp;</div>
+	<div class='col s6'>
+		<h4> People in your area looking for a carpool: </h4>
+		<table id='close-riders-table'>
+			<thead>
+				<tr>
+					<th data-field='username'>username</th>
+					<th data-field='message'>message</th>
+					<th data-field='invite'>invite</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class='col s3'></div>
+</div>

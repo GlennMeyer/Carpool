@@ -3,8 +3,6 @@ class CreateCommutes < ActiveRecord::Migration
     create_table :commutes do |t|
       t.references :user
 
-      t.references :role, polymorphic: true, index: true
-
       t.string :meetup_street
       t.string :meetup_city
       t.string :meetup_state

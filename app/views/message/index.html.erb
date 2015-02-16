@@ -29,7 +29,14 @@
 				<td><%= User.find(message.sender_id).username %></td>
 				<td><%= message.created_at %></td>
 				<td><%= message.message %></td>
-				<td><button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button></td>
+				<td>
+          <% if message.invite == true %>
+            <!-- <a href='/rideshare/<%= User.find(message.sender_id).commute.driver.id %>/accept'><button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button></a> -->
+            <%= link_to accept_rideshare_path(User.find(message.sender_id).commute.driver.id), method: :put do %>
+              <button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button>
+              <% end %>
+          <% end %>
+        </td>
 				<td><button href='#reply_modal' data-id="<%= message.sender_id %>" data-username="<%= User.find(message.sender_id).username %>" class='modal-trigger waves-effect waves-light btn'><i class="mdi-content-reply"></i></button></td>
 				<td>
 					<a href='mail/destroy/<%= message.id %>'>
@@ -51,9 +58,9 @@
             <th data-field="sender">Recipient</th>
             <th data-field="sent_at">Sent At</th>
             <th data-field="message">Message</th>
-        	<th data-field='delete'>Delete</th>
-        	<th data-field='actions'>&nbsp;</th>
-        	<th data-field='actions'>&nbsp;</th>
+          	<th data-field='delete'>Delete</th>
+          	<th data-field='actions'>&nbsp;</th>
+          	<th data-field='actions'>&nbsp;</th>
         </tr>
       </thead>
 

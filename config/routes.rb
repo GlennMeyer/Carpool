@@ -11,9 +11,14 @@ Rails.application.routes.draw do
   post 'users/:id/commutes/create' => 'commute#create', as: 'commute'
 
   # Updating directions/viewing Riders
-  get '/users/:user_id/commutes/:id/edit' => 'commute#edit', as: 'edit_commute'
-  put '/users/:user_id/commutes/:id' => 'commute#update'
-  patch '/users/:user_id/commutes/:id' => 'commute#update'
+  get 'users/:user_id/commutes/:id/edit' => 'commute#edit', as: 'edit_commute'
+  put 'users/:user_id/commutes/:id' => 'commute#update'
+  patch 'users/:user_id/commutes/:id' => 'commute#update'
+
+  post 'drivers/create' => 'driver#create', as: 'driver'
+  get 'drivers/:id/edit' => 'driver#edit', as: 'edit_driver'
+
+  post 'riders/create' => 'rider#create', as: 'rider'
 
   # Messages Inbox
   get 'users/:id/inbox' => 'message#index', as: 'inbox'
@@ -21,6 +26,10 @@ Rails.application.routes.draw do
   post 'users/:id/messages/create' => 'message#create', as: 'message'
 
   get 'messages/:id' => 'message#destroy', as: 'destroy_message'
+
+  get 'rideshare/:id' => 'rideshare#show', as: 'show_rideshare'
+  put 'rideshare/:id/accept' => 'rideshare#update', as: 'accept_rideshare'
+  patch 'rideshare/:id/accept' => 'rideshare#update'
 
   # You can have the root of your site routed with "root"
 

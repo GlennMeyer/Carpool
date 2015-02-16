@@ -1,4 +1,5 @@
 class Commute < ActiveRecord::Base
   belongs_to :user
-  belongs_to :role, :polymorphic => true
+  has_one :driver
+  has_one :rider
 end
