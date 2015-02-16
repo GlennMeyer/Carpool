@@ -31,7 +31,6 @@
 				<td><%= message.message %></td>
 				<td>
           <% if message.invite == true %>
-            <!-- <a href='/rideshare/<%= User.find(message.sender_id).commute.driver.id %>/accept'><button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button></a> -->
             <%= link_to accept_rideshare_path(User.find(message.sender_id).commute.driver.id), method: :put do %>
               <button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button>
               <% end %>

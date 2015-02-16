@@ -15,6 +15,8 @@ class DriverController < ApplicationController
   def edit
     @driver = Driver.find(current_user.commute.driver.id)
 
+    @message = Message.new
+
     @riders = Rider.where(looking: true)
   end
 

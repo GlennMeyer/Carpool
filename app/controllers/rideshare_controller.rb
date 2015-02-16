@@ -1,6 +1,24 @@
 class RideshareController < ApplicationController
+  def remove
+    rideshare = Rideshare.find(params[:id])
+    rider = Rider.find(rideshare.rider_id)
+    rideshare.update(rider_id: nil)
+    rider.update(looking: true)
+
+    if current_user.commute.driver
+      redirect_to show_rideshare_path
+    else
+      redirect_to edit_rider_path
+    end
+  end
+
   def show
-    @riders = current_user.commute.driver.riders
+    if current_user.commute.driver != nil
+      @riders = current_user.commute.driver.riders
+    else
+      @driver = current_user.commute.rider.rideshare.driver
+    end
+
   end
 
   def update
@@ -21,5 +39,3 @@ class RideshareController < ApplicationController
     end
   end
 end
-
-m = Message.where(recipient_id: 3, sender_id: 1, invite: true)

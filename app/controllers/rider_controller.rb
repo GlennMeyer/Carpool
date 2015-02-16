@@ -5,6 +5,14 @@ class RiderController < ApplicationController
     redirect_to root_path
   end
 
+  def edit
+    @rider = Rider.find(current_user.commute.rider.id)
+
+    @drivers = Driver.all
+
+    @message = Message.new
+  end
+
   private
 
   def rider_params
