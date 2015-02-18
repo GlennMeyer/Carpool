@@ -24,7 +24,7 @@
 
 		var compare = {k: <%= driver.commute.meetup_lat ? driver.commute.meetup_lat : 0 %>, D: <%= driver.commute.meetup_lng ? driver.commute.meetup_lng : 0 %>}
 
-		if (google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= @rider.commute.search_distance %> * 1600) ){
+		if ( <%= driver.riders.length %> < 3 && google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= driver.commute.search_distance %> * 1600) ){
 
 			closeRiders.push({
 				id: "<%= driver.id %>",

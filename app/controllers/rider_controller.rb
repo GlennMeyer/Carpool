@@ -1,4 +1,6 @@
 class RiderController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     user = User.find(current_user.id)
     user.commute.create_rider(rider_params)
