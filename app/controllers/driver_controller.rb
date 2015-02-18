@@ -11,7 +11,7 @@ class DriverController < ApplicationController
         })
     end
 
-    redirect_to root_path
+    redirect_to edit_driver_path(user.commute.driver)
   end
 
   def edit

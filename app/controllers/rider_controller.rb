@@ -4,7 +4,7 @@ class RiderController < ApplicationController
   def create
     user = User.find(current_user.id)
     user.commute.create_rider(rider_params)
-    redirect_to root_path
+    redirect_to edit_rider_path(user.commute.rider)
   end
 
   def edit
