@@ -9,10 +9,21 @@
     			<li><%= link_to "Create Commute", new_commute_path(current_user) %></li>
 			<% end %>
 			<% if current_user.commute != nil %>
-				<li><%= link_to 'Find Riders', edit_driver_path(current_user.commute.driver.id) if current_user.commute.driver != nil %></li>
-				<li><%= link_to 'Show Carpool', show_rideshare_path(current_user.commute.driver.rideshares) if current_user.commute.driver != nil %></li>
+				<% if current_user.commute.driver %>
+					<li><%= link_to 'Find Riders', edit_driver_path(current_user.commute.driver.id) %></li>
+					<li><%= link_to 'Show Carpool', show_rideshare_path if current_user.commute.driver.rideshares %></li>
+				<% elsif current_user.commute.rider %>
+					<li><%= link_to 'Find Drivers', edit_rider_path(current_user.commute.rider.id) %></li>
+					<li><%= link_to 'Show Carpool', show_rideshare_path if current_user.commute.rider.rideshare %></li>
+				<% end %>
 			<% end %>
-    		<li><%= link_to "Messages", inbox_path(current_user) %></li>
+    		<li>
+    			<a href="/users/<%= current_user.id %>/inbox">Messages
+    				<% if current_user.messages_as_recipient.where(read: false).length > 0 %>
+						<span class="new badge red"><%= current_user.messages_as_recipient.where(read: false).length %></span>
+    				<% end %>
+    			</a>
+    		</li>
     		<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
     	<% else %>
 			<li><%= link_to "Log In", '#log_in_modal', class: "modal-trigger" %></li>

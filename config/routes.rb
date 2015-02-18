@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'drivers/:id/edit' => 'driver#edit', as: 'edit_driver'
 
   post 'riders/create' => 'rider#create', as: 'rider'
+  get 'riders/:id/edit' => 'rider#edit', as: 'edit_rider'
 
   # Messages Inbox
   get 'users/:id/inbox' => 'message#index', as: 'inbox'
@@ -27,9 +28,12 @@ Rails.application.routes.draw do
 
   get 'messages/:id' => 'message#destroy', as: 'destroy_message'
 
-  get 'rideshare/:id' => 'rideshare#show', as: 'show_rideshare'
+  get 'my-rideshare/' => 'rideshare#show', as: 'show_rideshare'
+
   put 'rideshare/:id/accept' => 'rideshare#update', as: 'accept_rideshare'
   patch 'rideshare/:id/accept' => 'rideshare#update'
+
+  get 'rideshare/:id/remove' => 'rideshare#remove', as: 'remove_rider'
 
   # You can have the root of your site routed with "root"
 

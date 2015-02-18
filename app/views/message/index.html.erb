@@ -17,21 +17,21 @@
             <th data-field="sender">Sender</th>
             <th data-field="sent_at">Sent At</th>
             <th data-field="message">Message</th>
-			<th data-field='approve'>Approve</th>
-			<th data-field='reply'>Reply</th>
-			<th data-field='delete'>Delete</th>
+      			<th data-field='approve'>Approve</th>
+      			<th data-field='reply'>Reply</th>
+      			<th data-field='delete'>Delete</th>
         </tr>
       </thead>
 
       <tbody>
       	<% @inbox.each do |message| %>
+          <% message.update(read: true) %>
 	        <tr>
 				<td><%= User.find(message.sender_id).username %></td>
-				<td><%= message.created_at %></td>
+				<td><%= message.created_at.in_time_zone("Central Time (US & Canada)") %></td>
 				<td><%= message.message %></td>
 				<td>
           <% if message.invite == true %>
-            <!-- <a href='/rideshare/<%= User.find(message.sender_id).commute.driver.id %>/accept'><button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button></a> -->
             <%= link_to accept_rideshare_path(User.find(message.sender_id).commute.driver.id), method: :put do %>
               <button class='waves-effect waves-light btn'><i class="mdi-navigation-check"></i></button>
               <% end %>
@@ -39,7 +39,7 @@
         </td>
 				<td><button href='#reply_modal' data-id="<%= message.sender_id %>" data-username="<%= User.find(message.sender_id).username %>" class='modal-trigger waves-effect waves-light btn'><i class="mdi-content-reply"></i></button></td>
 				<td>
-					<a href='mail/destroy/<%= message.id %>'>
+					<a href='<%= destroy_message_path(message.id) %>'>
 					<button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-action-delete"></i></button></a>
 				</td>
 	        </tr>
@@ -68,10 +68,10 @@
       	<% @outbox.each do |message| %>
 	        <tr>
 				<td><%= User.find(message.recipient_id).username %></td>
-				<td><%= message.created_at %></td>
+				<td><%= message.created_at.in_time_zone("Central Time (US & Canada)") %></td>
 				<td><%= message.message %></td>
 		        <td>
-		        	<a href='/messages/<%= message.id %>'>
+		        	<a href='<%= destroy_message_path(message.id) %>'>
 		        	<button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-action-delete"></i></button></a>
 		        </td>
 	        </tr>
@@ -119,13 +119,12 @@
 
 	$('.modal-trigger').leanModal({
 		ready: function(){
-			console.log('recipientId', recipientId, 'recipientUsername',recipientUsername)
 			$('#recipient').val(recipientUsername)
 			$('#message_recipient_id').val(recipientId)
 		}
 	});
 
-	$('.modal-trigger').on('click', function(){
+	$('.modal-trigger').click(function(){
 		recipientId = $(this).attr('data-id')	
 		recipientUsername = $(this).attr('data-username')
 	})

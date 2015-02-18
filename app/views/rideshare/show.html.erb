@@ -1,22 +1,110 @@
-<div class='row'>
-	<div class='col s4'>&nbsp;</div>
-	<div class='col s4'>
-		<table>
-			<thead>
-				<tr>
-					<th data-field="user">Username</th>
-					<th data-field="remove">Remove</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @riders.each do |rider| %>
+<% if current_user.commute.driver %>
+	<div class='row'>
+		<div class='col s4'>&nbsp;</div>
+		<div class='col s4'>
+			<table>
+				<thead>
 					<tr>
-						<td><%= rider.user.username %></td>
-						<td><button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-navigation-close"></i></button></td>
+						<th data-field="user">Username</th>
+						<th data-field="message">Message</th>
+						<th data-field="remove">Remove</th>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<% @riders.each do |rider| %>
+						<tr>
+							<td class='rider-username'  data-id="<%= rider.user.id %>"><%= rider.user.username %></td>
+							<td><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn' data-id='test'><i class='mdi-communication-email'></i></a></td>
+							<td><a href="<%= remove_rider_path(rider.rideshare.id) %>" class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-navigation-close"></i></a></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class='col s4'></div>
 	</div>
-	<div class='col s4'></div>
+
+	
+<% else %>
+	<div class='row'>
+		<div class='col s12'>
+			<table>
+				<thead>
+					<tr>
+						<th data-field='role'>Role</th>
+						<th data-field='username'>Username</th>
+						<th data-field='action'>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Driver</td><td><%= @driver.user.username %></td><td><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a></td>
+					</tr>
+					<% @driver.riders.each do |rider| %>
+						<tr>
+							<td>Rider</td><td><%= rider.user.username %></td>
+							<td>
+								<% if rider.user.username == current_user.username %> 
+									<a href="<%= remove_rider_path(rider.rideshare.id) %>"><button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-navigation-close"></i></button></a>
+								<% else %>
+									<a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>
+								<% end %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+<% end %>
+
+<div id="rider_message_modal" class="modal row">
+	<div class="row">
+		<div class="col s12">
+			<h4>Send a message to the Rider.</h4>
+		</div>
+	</div>
+	<%= form_for @message, url: message_path(current_user), html: {class: 'col s12'} do |f| %>
+    <div class="row">
+      <div class="col s4">
+        <label for="sender">Sender:</label>
+        <input id="sender" type="text" class="validate" value='<%= current_user.username %>' disabled selected>
+      </div>
+      <div class="col s4">
+        <label for="recipient">Recipient:</label>
+        <input id="recipient" type="text" class="validate" disabled selected>
+        <%= f.hidden_field :recipient_id %>
+      </div>
+    </div>
+    <div class="row">
+    	<div class="col s8">
+	    	<!-- <textarea class="materialize-textarea" placeholder="Hey man!  Let's meet-up!"></textarea>
+	        <label>Message:</label> -->
+	        <%= f.label :message %>
+	        <%= f.text_area :message, class: 'materialize-textarea' %>
+    	</div>
+    	<div class="col s4">
+    		<button type='submit' class='waves-effect waves-light btn'>Send Message</button>
+    	</div>
+	</div>
+  <% end %>
 </div>
+
+<script type="text/javascript">
+	var recipientUsername
+	var recipientId
+
+	$('.modal-trigger').leanModal({
+		ready: function(){
+			$('#recipient').val(recipientUsername)
+			$('#message_recipient_id').val(recipientId)
+		}
+	});
+
+	// $(document).ready(function(){
+		$('a.modal-trigger').click(function(){
+			recipientUsername = $(this).parent().prev('.rider-username').text()
+			recipientId = $(this).parent().prev('.rider-username').attr('data-id')
+		})
+	// })
+</script>

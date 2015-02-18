@@ -178,7 +178,7 @@
 					google.maps.event.addListener(marker, 'click', (function(marker){
 							return function() {
 								// infowindow.setContent('<h6>Rider found!</h6><p><%= entry.meetup_street %></p><%= link_to "Invite Rider", "#rider_invite_modal", class: "modal-trigger" %>')
-								infowindow.setContent("<h6>Rider found!</h6><p id='recipient-username' data-id='<%= entry.user_id %>'><%= User.find(entry.user_id).username %></p><a href='#rider_invite_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>")
+								infowindow.setContent("<h6>Rider found!</h6><p id='recipient-username' data-id='<%= entry.user_id %>'><%= User.find(entry.user_id).username %></p><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>")
 		    					infowindow.open(map, marker);
 							}
 
@@ -275,7 +275,7 @@
 </div> -->
 <!-- End Rider Invite Modal -->
 
-<div id="rider_invite_modal" class="modal row">
+<div id="rider_message_modal" class="modal row">
 	<div class="row">
 		<div class="col s12">
 			<h4>Send a message to the Rider.</h4>

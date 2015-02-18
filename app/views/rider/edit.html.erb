@@ -18,17 +18,17 @@
 
 	google.maps.event.addListenerOnce(map, 'idle', function(){
 		var infowindow = new google.maps.InfoWindow()
-		var initial = {k: <%= @driver.commute.meetup_lat %>, D: <%= @driver.commute.meetup_lng %>}
+		var initial = {k: <%= @rider.commute.meetup_lat %>, D: <%= @rider.commute.meetup_lng %>}
 
-		<% @riders.each do |rider| %>
+		<% @drivers.each do |driver| %>
 
-		var compare = {k: <%= rider.commute.meetup_lat ? rider.commute.meetup_lat : 0 %>, D: <%= rider.commute.meetup_lng ? rider.commute.meetup_lng : 0 %>}
+		var compare = {k: <%= driver.commute.meetup_lat ? driver.commute.meetup_lat : 0 %>, D: <%= driver.commute.meetup_lng ? driver.commute.meetup_lng : 0 %>}
 
-		if (google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= @driver.commute.search_distance %> * 1600) ){
+		if ( <%= driver.riders.length %> < 3 && google.maps.geometry.spherical.computeDistanceBetween(initial, compare) < (<%= driver.commute.search_distance %> * 1600) ){
 
 			closeRiders.push({
-				id: "<%= rider.id %>",
-				username: "<%= rider.user.username %>"
+				id: "<%= driver.id %>",
+				username: "<%= driver.user.username %>"
 				})
 
 			var marker = new google.maps.Marker({
@@ -39,7 +39,7 @@
 
 			google.maps.event.addListener(marker, 'click', (function(marker){
 					return function() {
-						infowindow.setContent("<h6>Rider found!</h6><p id='recipient-username' data-id='<%= rider.user.id %>'><%= rider.user.username %></p><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>")
+						infowindow.setContent("<h6>Driver found!</h6><p id='recipient-username' data-id='<%= driver.user.id %>'><%= driver.user.username %></p><a href='#driver_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a>")
     					infowindow.open(map, marker);
 					}
 
@@ -58,8 +58,8 @@
       				});
 				});
 
-		// var table = $('#close-riders-table')
-		// closeRiders.map(function(rider){
+		// var table = $('#close-drivers-table')
+		// closeRiders.map(function(driver){
 		// 	var $tr = $('<tr>')
 
 		// 	var $td = $('<td>')
@@ -72,7 +72,7 @@
 		// 	var $inviteButton = $('<button>').addClass('waves-effect waves-light btn')
 		// 	var $inviteIcon = $('<i>').addClass('mdi-content-add-circle-outline')
 
-		// 	$td.text(rider.username).attr('data-rider-id', rider.id)
+		// 	$td.text(driver.username).attr('data-driver-id', driver.id)
 		// 	$tr.append($td)
 		// 	$messageButton.append($messageIcon)
 		// 	$messageTd.append($messageButton)
@@ -87,27 +87,11 @@
 	console.log('closeRiders', closeRiders)
 
 </script>
-<!-- <div class='row'>
-	<div class='col s3'>&nbsp;</div>
-	<div class='col s6'>
-		<h4> People in your area looking for a carpool: </h4>
-		<table id='close-riders-table'>
-			<thead>
-				<tr>
-					<th data-field='username'>username</th>
-					<th data-field='message'>message</th>
-					<th data-field='invite'>invite</th>
-				</tr>
-			</thead>
-		</table>
-	</div>
-	<div class='col s3'></div>
-</div> -->
 
-<div id="rider_message_modal" class="modal row">
+<div id="driver_message_modal" class="modal row">
 	<div class="row">
 		<div class="col s12">
-			<h4>Send a message to the Rider.</h4>
+			<h4>Send a message to the Driver.</h4>
 		</div>
 	</div>
 	<%= form_for @message, url: message_path, html: {class: 'col s12'} do |f| %>
@@ -128,12 +112,6 @@
 	        <%= f.text_area :message, class: 'materialize-textarea' %>
     	</div>
     	<div class="col s4">
-    		<p>
-			    <input name="message[invite]" type="radio" id="radio1" checked/>
-			    <label for="radio1">Message</label>
-			    <input name="message[invite]" type="radio" id="radio2" />
-			    <label for="radio2">Invite</label>
-			</p>
     		<button type='submit' class='waves-effect waves-light btn'>Send Message</button>
     	</div>
 	</div>
