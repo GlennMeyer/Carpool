@@ -25,7 +25,7 @@
 
       <tbody>
       	<% @inbox.each do |message| %>
-          <% message.update(read: true) %>
+          <% message.update(read: true) if message.read == false %>
 	        <tr>
 				<td><%= User.find(message.sender_id).username %></td>
 				<td><%= message.created_at.in_time_zone("Central Time (US & Canada)") %></td>

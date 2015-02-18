@@ -38,11 +38,12 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>Driver</td><td><%= @driver.user.username %></td><td><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a></td>
+						<td>Driver</td><td class='rider-username'  data-id="<%= @driver.user.id %>"><%= @driver.user.username %></td><td><a href='#rider_message_modal' class='modal-trigger waves-effect waves-light btn'><i class='mdi-communication-email'></i></a></td>
 					</tr>
 					<% @driver.riders.each do |rider| %>
 						<tr>
-							<td>Rider</td><td><%= rider.user.username %></td>
+							<td>Rider</td>
+							<td class='rider-username'  data-id="<%= rider.user.id %>"><%= rider.user.username %></td>
 							<td>
 								<% if rider.user.username == current_user.username %> 
 									<a href="<%= remove_rider_path(rider.rideshare.id) %>"><button class='waves-effect waves-light btn' style='background-color: #d91c2d;'><i class="mdi-navigation-close"></i></button></a>
@@ -96,6 +97,7 @@
 
 	$('.modal-trigger').leanModal({
 		ready: function(){
+			console.log('recipientUsername', recipientUsername, 'recipientId', recipientId)
 			$('#recipient').val(recipientUsername)
 			$('#message_recipient_id').val(recipientId)
 		}

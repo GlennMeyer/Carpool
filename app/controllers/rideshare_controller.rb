@@ -6,8 +6,6 @@ class RideshareController < ApplicationController
     rider = Rider.find(rideshare.rider_id)
     rideshare.update(rider_id: nil)
     rider.update(looking: true)
-
-    binding.pry
     
     Message.create({
         recipient_id: rideshare.driver.user.id,

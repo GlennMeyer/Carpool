@@ -21,7 +21,7 @@ class MessageController < ApplicationController
     @message = Message.new
 
     @inbox = user.messages_as_recipient.order('invite DESC, created_at DESC')
-    @outbox = user.messages_as_sender
+    @outbox = user.messages_as_sender.order('created_at DESC')
   end
 
   def reply
