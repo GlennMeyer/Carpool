@@ -2,24 +2,42 @@
   <div class="container">
     <div class="row">
       <div class="col l6 s12">
-        <h5 class="white-text">Footer Content</h5>
-        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+        <h5 class="white-text">Carpool Austin</h5>
+        <p class="grey-text text-lighten-4"> 716 N Congress Ave #100, Austin, TX 78701</p>
       </div>
       <div class="col l4 offset-l2 s12">
         <h5 class="white-text">Links</h5>
         <ul>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+          <% if current_user %>
+            <% if current_user.commute %>
+              <li><%= link_to "Edit Commute", edit_commute_path(current_user, current_user.commute), class: "grey-text text-lighten-3" %></li>
+            <% elsif current_user %>
+              <li><%= link_to "New Commute", new_commute_path(current_user), class: "grey-text text-lighten-3" %></li>
+            <% end %>
+            <% if current_user.commute && current_user.commute.driver %>
+              <li><%= link_to 'Find Riders', edit_driver_path(current_user.commute.driver.id), class: "grey-text text-lighten-3" %></li>
+              <li><%= link_to 'Show Carpool', show_rideshare_path, class: "grey-text text-lighten-3" if current_user.commute.driver.rideshares %></li>
+            <% elsif current_user.commute && current_user.commute.rider %>
+              <li><%= link_to 'Find Drivers', edit_rider_path(current_user.commute.rider.id), class: "grey-text text-lighten-3" %></li>
+              <li><%= link_to 'Show Carpool', show_rideshare_path, class: "grey-text text-lighten-3" if current_user.commute.rider.rideshare %></li>
+            <% end %>
+            <li>
+              <a class="grey-text text-lighten-3" href="/users/<%= current_user.id %>/inbox">Messages
+                <% if current_user.messages_as_recipient.where(read: false).length > 0 %>
+                  <span class="new badge red"><%= current_user.messages_as_recipient.where(read: false).length %></span>
+                <% end %>
+              </a>
+            </li>
+            <li><%= link_to "Logout", destroy_user_session_path, :method => :delete, class: "grey-text text-lighten-3" %></li>
+          <% end %>
+          <li><a class="grey-text text-lighten-3" href="<%= about_path %>">About Me</a></li>
         <ul>
       </div>
     </div>
   </div>
   <div class="footer-copyright">
     <div class="container">
-    © 2014 Copyright Text
-    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+    © 2015 Carpool Austin
     </div>
   </div>
 </footer>
