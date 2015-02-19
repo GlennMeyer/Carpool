@@ -24,8 +24,8 @@
   #   dropoff_state: 'Texas',
   #   dropoff_lat: 30.269725,
   #   dropoff_lng: -97.74265400000002,
-  #   meetup_time: "2000-01-01 06:00:00",
-  #   dropoff_time: "2000-01-01 15:00:00",
+  #   leave_time: "2000-01-01 06:00:00",
+  #   return_time: "2000-01-01 15:00:00",
   #   search_distance: 5
   # },
 
@@ -70,8 +70,8 @@ Commute.create([
     dropoff_state: 'Texas',
     dropoff_lat: 30.269725,
     dropoff_lng: -97.74265400000002,
-    meetup_time: "2000-01-01 06:00:00",
-    dropoff_time: "2000-01-01 15:00:00",
+    leave_time: "2000-01-01 06:00:00",
+    return_time: "2000-01-01 15:00:00",
     search_distance: 5
   },
   {
@@ -86,8 +86,8 @@ Commute.create([
     dropoff_state: 'Texas',
     dropoff_lat: 30.1777867,
     dropoff_lng: -98.0025369,
-    meetup_time: "2000-01-01 06:00:00",
-    dropoff_time: "2000-01-01 15:00:00",
+    leave_time: "2000-01-01 06:00:00",
+    return_time: "2000-01-01 15:00:00",
     search_distance: 5
   },
   {
@@ -102,8 +102,8 @@ Commute.create([
     dropoff_state: 'Texas',
     dropoff_lat: 30.269725,
     dropoff_lng: -97.74265400000002,
-    meetup_time: "2000-01-01 06:00:00",
-    dropoff_time: "2000-01-01 15:00:00",
+    leave_time: "2000-01-01 06:00:00",
+    return_time: "2000-01-01 15:00:00",
     search_distance: 5
   },
   {
@@ -118,8 +118,8 @@ Commute.create([
     dropoff_state: 'Texas',
     dropoff_lat: 30.269725,
     dropoff_lng: -97.74265400000002,
-    meetup_time: "2000-01-01 06:00:00",
-    dropoff_time: "2000-01-01 15:00:00",
+    leave_time: "2000-01-01 06:00:00",
+    return_time: "2000-01-01 15:00:00",
     search_distance: 5
   },
   {
@@ -134,8 +134,8 @@ Commute.create([
     dropoff_state: 'Texas',
     dropoff_lat: 30.269725,
     dropoff_lng: -97.74265400000002,
-    meetup_time: "2000-01-01 06:00:00",
-    dropoff_time: "2000-01-01 15:00:00",
+    leave_time: "2000-01-01 06:00:00",
+    return_time: "2000-01-01 15:00:00",
     search_distance: 5
   }
 ])

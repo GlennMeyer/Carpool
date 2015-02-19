@@ -35,6 +35,8 @@ Rails.application.routes.draw do
 
   get 'rideshare/:id/remove' => 'rideshare#remove', as: 'remove_rider'
 
+  get 'about' => 'home#about', as: 'about'
+
   # You can have the root of your site routed with "root"
 
   # Example of regular route:

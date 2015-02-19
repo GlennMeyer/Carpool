@@ -1,8 +1,8 @@
 <div class='row'>
 	<div class='col s2'>&nbsp;</div>
 	<div class='col s8'>
-		<h3>This is where you will instantiate a CarPool</h3>
-		<p>For the meetup location, provide a public location that you are willing to meet people at.  For the dropoff location, provide another public location that is somewhere close to your work where you are willing to drop people off at.</p>
+		<h3 class=''>Please enter your commute!</h3>
+		<p>On this page, the end user will use the form below to submit their commute.  The form will require two locations, a public starting point to meetup with the riders and another point to drop them off.  You can also enter the time you wish to leave to go to work with people and the time you expect to make the return trip.  Lastly, the slider is for the distance (in miles) you would like to search for users near your meetup and dropoff locations.  It is encouraged that users do not share their actual residential address for personal security reasons.</p>
 	</div>
 	<div class='col s2'></div>
 </div>
@@ -52,16 +52,16 @@
 		</div>
 		<div class="row">
 			<div class="col s4">
-				<%= f.label :meetup_time %>
-				<%= f.select(:meetup_time) do %>
+				<%= f.label :leave_time %>
+				<%= f.select(:leave_time) do %>
 					<% [['06 AM', '06:00:00'],['07 AM', '07:00:00'],['08 AM', '08:00:00'],['09 AM', '09:00:00'],['10 AM', '10:00:00'],['11 AM', '11:00:00'],['12 AM', '12:00:00']].each do |c| -%>
 						<%= content_tag(:option, c.first, value: c.last) %>
 					<% end %>
 				<% end %>
 			</div>
 			<div class="col s4">
-				<%= f.label :dropoff_time %>
-				<%= f.select(:dropoff_time) do %>
+				<%= f.label :return_time %>
+				<%= f.select(:return_time) do %>
 					<% [['03 PM', '15:00:00'],['04 PM', '16:00:00'],['05 PM', '17:00:00'],['06 PM', '18:00:00'],['07 PM', '19:00:00'],['08 PM', '20:00:00'],['09 PM', '21:00:00']].each do |c| -%>
 						<%= content_tag(:option, c.first, value: c.last) %>
 					<% end %>

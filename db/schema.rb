@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150215180631) do
+ActiveRecord::Schema.define(version: 20150219033106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20150215180631) do
     t.string  "dropoff_state"
     t.float   "dropoff_lat"
     t.float   "dropoff_lng"
-    t.time    "meetup_time"
-    t.time    "dropoff_time"
+    t.time    "leave_time"
+    t.time    "return_time"
     t.integer "search_distance"
   end
 
