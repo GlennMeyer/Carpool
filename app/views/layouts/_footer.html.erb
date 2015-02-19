@@ -21,8 +21,7 @@
               <li><%= link_to 'Find Drivers', edit_rider_path(current_user.commute.rider.id), class: "grey-text text-lighten-3" %></li>
               <li><%= link_to 'Show Carpool', show_rideshare_path, class: "grey-text text-lighten-3" if current_user.commute.rider.rideshare %></li>
             <% end %>
-            <li>
-              <a class="grey-text text-lighten-3" href="/users/<%= current_user.id %>/inbox">Messages
+            <li><a class="grey-text text-lighten-3" href="/users/<%= current_user.id %>/inbox">Messages
                 <% if current_user.messages_as_recipient.where(read: false).length > 0 %>
                   <span class="new badge red"><%= current_user.messages_as_recipient.where(read: false).length %></span>
                 <% end %>

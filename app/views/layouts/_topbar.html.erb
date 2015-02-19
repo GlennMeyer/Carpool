@@ -24,22 +24,23 @@
 		<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
 	<% end %>
 </ul>
+
 <nav>
-  <div class="nav-wrapper">
-    <div class="col s12">
-      <a href="/" class="brand-logo">Carpool Austin</a>
-      <ul class="right">
-        <!-- Dropdown Trigger -->
-        <% if current_user %>
-        	<li><a class="dropdown-button" href="#!" data-activates="dropdown1"><%= current_user.username %><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
-		<% else %>
-			<li><%= link_to "Log In", '#log_in_modal', class: "modal-trigger" %></li>
-			<li><%= link_to "Sign Up", '#sign_up_modal', class: "modal-trigger" %></li>
-		<% end %>
-        <li><a href="<%= about_path %>">About Me</a></li>
-      </ul>
-    </div>
-  </div>
+	<div class="nav-wrapper">
+	    <div class="col s12">
+		    <a href="/" class="brand-logo">Carpool Austin</a>
+		    <ul class="right hide-on-med-and-down">
+		        <!-- Dropdown Trigger -->
+		        <% if current_user %>
+		        	<li><a class="dropdown-button" href="#!" data-activates="dropdown1"><%= current_user.username %><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+				<% else %>
+					<li><%= link_to "Log In", '#log_in_modal', class: "modal-trigger" %></li>
+					<li><%= link_to "Sign Up", '#sign_up_modal', class: "modal-trigger" %></li>
+				<% end %>
+		        <li><a href="<%= about_path %>">About Me</a></li>
+		    </ul>
+	    </div>
+	</div>
 </nav>
 
 <!-- End Dropdown Navbar -->
@@ -86,17 +87,15 @@
 	<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   		<%= devise_error_messages! %>
   		<div class="row">
-	    	<div class="input-field col s12">
+	    	<div class="input-field col s6">
 	        	<%= f.label :username %><br />
 	        	<%= f.text_field :username, autofocus: true, class: "validate" %>
 	    	</div>
-	    </div>
-  		<div class="row">
-  			<div class="input-field col s12">
+  			<div class="input-field col s6">
     			<%= f.label :email %><br />
     			<%= f.email_field :email, class: "validate" %>
   			</div>
-  		</div>
+	    </div>
   		<div class="row">
 	  		<div class="input-field col s12">
 	    		<%= f.label :password %>
@@ -125,7 +124,7 @@
 
 <script>
 	$(document).ready(function(){
-		$(".dropdown-button").dropdown();
+		$(".dropdown-button").dropdown({hover: false});
     	$('.modal-trigger').leanModal();
   	});
 </script>

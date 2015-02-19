@@ -108,9 +108,9 @@
     	<div class="col s4">
         <% if current_user.commute && current_user.commute.driver %>
           <p>
-            <input name="message[invite]" type="radio" id="radio1" checked/>
+            <input name="message[invite]" type="radio" id="radio1" value='false' checked/>
             <label for="radio1">Message</label>
-            <input name="message[invite]" type="radio" id="radio2" />
+            <input name="message[invite]" type="radio" id="radio2" value='true' />
             <label for="radio2">Invite</label>
           </p>
         <% end %>
